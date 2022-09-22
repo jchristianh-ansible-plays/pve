@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ansible-playbook pve.yml --limit nvme_lab
+ansible-playbook pve.yml
 read -p 'Has pve.yml completed successfully? (y/n) ' pve_complete
 
 if [ $pve_complete = 'y' ]
