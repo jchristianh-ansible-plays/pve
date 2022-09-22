@@ -35,7 +35,6 @@ __lab_mem_default   : .25
 __lab_snapshot_name: aap_lab
 
 
-__use_bastion  : yes
 __bastion_user : root
 __bastion_host : 10.1.1.86
 
