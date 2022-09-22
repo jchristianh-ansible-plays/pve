@@ -1,0 +1,109 @@
+---
+# PVE vmid's will start at this number
+# and increment from there...
+lab_vmid_base: 4400
+
+
+lab_nodes:
+#  # RHEL 8.6 Hosts:
+#  # (or default template)
+#  #######################
+#  - name           : lab-aap-1
+#    group          : aap_lab_nodes
+#    cores          : 4
+#    mem            : 4
+#
+#  - name           : lab-db-1
+#    group          : aap_lab_db
+#    cores          : 4
+#    mem            : 4
+#
+#  - name           : lab-iso-exec-1
+#    group          : aap_lab_isoexec
+#    cores          : 8
+#    mem            : 16
+#
+#  - name           : lab-iso-exec-2
+#    group          : aap_lab_isoexec
+#    cores          : 8
+#    mem            : 16
+
+  - name           : lab-tower-1
+    group          : aap_lab_nodes
+    cores          : 4
+    mem            : 4
+
+  - name           : lab-tower-2
+    group          : aap_lab_nodes
+    cores          : 4
+    mem            : 4
+
+  - name           : lab-db-1
+    group          : aap_lab_db
+    cores          : 4
+    mem            : 4
+
+  - name           : lab-iso-exec-1
+    group          : aap_lab_isoexec
+    cores          : 8
+    mem            : 8
+
+#  - name           : lab-iso-exec-2
+#    group          : aap_lab_isoexec
+#    cores          : 8
+#    mem            : 8
+
+
+
+  # nodes for playing with
+  ########################
+  - name           : lab-dev-1
+    group          : aap_lab_dev
+    vm_template_id : 202209011
+
+  - name           : lab-dev-2
+    group          : aap_lab_dev
+    vm_template_id : 202209011
+
+  - name           : lab-dev-3
+    group          : aap_lab_dev
+    vm_template_id : 202209011
+
+  - name           : lab-test-1
+    group          : aap_lab_test
+    vm_template_id : 202209011
+
+  - name           : lab-test-2
+    group          : aap_lab_test
+    vm_template_id : 202209011
+
+  - name           : lab-test-3
+    group          : aap_lab_test
+    vm_template_id : 202209011
+
+  - name           : lab-prod-1
+    group          : aap_lab_prod
+    vm_template_id : 202209011
+
+  - name           : lab-prod-2
+    group          : aap_lab_prod
+    vm_template_id : 202209011
+
+  - name           : lab-prod-3
+    group          : aap_lab_prod
+    vm_template_id : 202209011
+
+  - name           : lab-grafana-1
+    vm_template_id : 202209011
+    group          : grafana
+    cores          : 2
+    mem            : 2
+
+  - name           : lab-prometheus-1
+    vm_template_id : 202209011
+    group          : prometheus
+    cores          : 2
+    mem            : 2
+
+
+...

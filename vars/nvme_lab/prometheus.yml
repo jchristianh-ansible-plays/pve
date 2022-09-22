@@ -1,0 +1,23 @@
+---
+__prometheus_global:
+  - name  : scrape_interval
+    value : 15s
+
+  - name  : evaluation_interval
+    value : 15s
+
+  - name  : scrape_timeout
+    value : 15s
+
+
+__prometheus_jobs:
+  - name: AAP2
+    metrics_path: /api/v2/metrics
+    scrape_interval: 5s
+    scheme: https
+    bearer_token: 2ffEZgnHoJyMKIt5fX6RTvAWQ3fIKz
+    targets:
+      - tower2.thezengarden.net
+
+
+...

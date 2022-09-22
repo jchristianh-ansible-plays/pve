@@ -1,0 +1,9 @@
+---
+__ssh_keypair_name    : id_rsa
+__ssh_keypair_dest    : "{{ playbook_dir }}/files"
+__ssh_keypair_size    : 4096
+__ssh_keypair_type    : rsa
+__ssh_authorized_file : /root/.ssh/authorized_keys
+
+
+...

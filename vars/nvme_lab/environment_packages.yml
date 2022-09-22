@@ -1,0 +1,44 @@
+---
+__environment_packages:
+  redhat_7:
+    - nfs-utils
+    - tar
+    - zip
+    - git
+    - httpd-tools
+    - net-tools
+
+  redhat_8:
+    - nfs-utils
+    - python36
+    - tar
+    - zip
+    - git
+    - httpd-tools
+    - python3-libsemanage
+    - tree
+    - wget
+    - net-tools
+
+  centos_9:
+    - nfs-utils
+    - python3
+    - tar
+    - zip
+    - git
+    - httpd-tools
+    - tree
+    - wget
+    - net-tools
+
+  debian_11:
+    - nfs-common
+    - python3
+    - tar
+    - zip
+    - git
+    - apache2-utils
+    - tree
+
+
+...

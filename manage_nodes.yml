@@ -1,0 +1,67 @@
+---
+- name: Provision PVE Managed Hosts
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+
+  # --------------------------------------------- #
+  # INCLUDED VARIABLES
+  # --------------------------------------------- #
+  vars_files:
+    - "vars/{{ __pve_env | default('tower_lab') }}/defaults.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/environment_packages.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/inventory_vars.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/lab_nodes.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/network.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/prometheus.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/ssh_keypair.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/template_defaults.yml"
+
+
+  # --------------------------------------------- #
+  # INLINE VARIABLES
+  # --------------------------------------------- #
+  vars:
+    # register rhel systems by default
+    __rhsm_register : yes
+
+    # update environment to latest packages
+    __update_hosts  : yes
+
+    # roles to include
+    __include_roles:
+      - jchristianh.lab_setup.ssh_keypair
+      - jchristianh.lab_setup.set_hostname
+      - jchristianh.lab_setup.deploy_etc_hosts
+      - jchristianh.lab_setup.bashrc
+      - jchristianh.lab_setup.rhsm        # this role includes a vault; use
+                                              # --ask-vault-pass when uncommenting
+      - jchristianh.lab_setup.base_pkgs
+#      - jchristianh.lab_setup.ansible_setup
+      - jchristianh.lab_setup.node_exporter
+
+
+  # --------------------------------------------- #
+  # TASKS
+  # --------------------------------------------- #
+  tasks:
+    - name: Include only RHSM role if unregistering
+      set_fact:
+        __include_roles: ['jchristianh.lab_setup.rhsm']
+      when:
+        - not __rhsm_register|bool
+
+
+# we can use set_fact with __include_roles; append rhsm if __rhsm_register == yes
+
+
+    - name         : Provision environment
+      include_role :
+        name       : "{{ lv_provision }}"
+      loop         : "{{ __include_roles }}"
+      loop_control :
+        loop_var   : lv_provision
+
+
+...

@@ -1,0 +1,40 @@
+---
+__project_maintainer       : Chris Hammer
+__project_maintainer_email : chris@thezengarden.net
+
+
+__pve_tld : thezengarden.net
+
+
+__pve_token    : 'PVEAPIToken=root@pam!ansible=e2356d3b-2141-4c90-866e-5ee997e301e3'
+__pve_node     : zg-vm-dev
+__pve_endpoint : "https://{{ __pve_node }}.{{ __pve_tld }}:8006/api2/json"
+
+
+__pve_template_host: zg-vm-dev
+
+
+__api_retries: 12
+__api_polling: 5
+
+#__api_retries: 1
+#__api_polling: 3
+
+
+__vm_start_delay: 5
+
+
+__vm_tmpl_id   : 202209012  # RHEL-7-03
+#__vm_tmpl_id   : 202208112  # RHEL-86-02
+
+
+__lab_cores_default : 2
+__lab_mem_default   : .25
+
+
+__lab_snapshot_name: aap_lab
+
+
+...
+
+

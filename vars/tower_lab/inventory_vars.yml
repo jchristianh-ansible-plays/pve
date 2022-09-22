@@ -1,0 +1,49 @@
+---
+__default_inventory_group: unassigned
+
+
+lab_groups:
+  - aap_lab_nodes
+  - aap_lab_isoexec
+  - aap_lab_dev
+  - aap_lab_test
+  - aap_lab_prod
+  - aap_lab_db
+  - aap_lab_control_nodes
+  - aap_lab_dhcp
+  - grafana
+  - prometheus
+  - "{{ __default_inventory_group }}"
+
+
+lab_parents:
+  aap_lab__all__envs:
+    groups:
+      - aap_lab_dev
+      - aap_lab_test
+      - aap_lab_prod
+      - aap_lab_db
+      - aap_lab_dhcp
+      - "{{ __default_inventory_group }}"
+    vars:
+      - "ansible_user=root"
+
+
+  aap_lab__all__nodes:
+    groups:
+      - aap_lab_nodes
+      - aap_lab_isoexec
+      - aap_lab_dev
+      - aap_lab_test
+      - aap_lab_prod
+      - aap_lab_db
+      - aap_lab_control_nodes
+      - aap_lab_dhcp
+      - grafana
+      - prometheus
+      - "{{ __default_inventory_group }}"
+    vars:
+      - "ansible_user=root"
+
+
+...

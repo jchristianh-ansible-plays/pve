@@ -1,0 +1,107 @@
+# Lab Environment Inventory
+#################################################
+#
+# Configuration    : lab_hosts
+# Template Version : 1.0-220908.1055
+#
+# Chris Hammer <chris@thezengarden.net>
+#################################################
+
+
+#########################
+# Environment Overview  #
+# --------------------  #
+# KEY:                  #
+#   Node :: Group :: IP #
+#########################
+# lab-tower-1 :: aap_lab_nodes :: 10.87.6.46 :: zg-vm-dev4
+# lab-tower-2 :: aap_lab_nodes :: 10.87.6.47 :: zg-vm-dev4
+# lab-db-1 :: aap_lab_db :: 10.87.6.48 :: zg-vm-dev4
+# lab-iso-exec-1 :: aap_lab_isoexec :: 10.87.6.49 :: zg-vm-dev4
+# lab-dev-1 :: aap_lab_dev :: 10.87.6.50 :: zg-vm-dev4
+# lab-dev-2 :: aap_lab_dev :: 10.87.6.51 :: zg-vm-dev4
+# lab-dev-3 :: aap_lab_dev :: 10.87.6.52 :: zg-vm-dev4
+# lab-test-1 :: aap_lab_test :: 10.87.6.53 :: zg-vm-dev4
+# lab-test-2 :: aap_lab_test :: 10.87.6.54 :: zg-vm-dev4
+# lab-test-3 :: aap_lab_test :: 10.87.6.55 :: zg-vm-dev4
+# lab-prod-1 :: aap_lab_prod :: 10.87.6.56 :: zg-vm-dev4
+# lab-prod-2 :: aap_lab_prod :: 10.87.6.57 :: zg-vm-dev4
+# lab-prod-3 :: aap_lab_prod :: 10.87.6.58 :: zg-vm-dev4
+# lab-grafana-1 :: grafana :: 10.87.6.59 :: zg-vm-dev4
+# lab-prometheus-1 :: prometheus :: 10.87.6.60 :: zg-vm-dev4
+
+
+
+###################
+### HOST GROUPS ###
+###################
+[aap_lab_nodes]
+lab-tower-1  ansible_host=10.87.6.46
+lab-tower-2  ansible_host=10.87.6.47
+
+[aap_lab_isoexec]
+lab-iso-exec-1  ansible_host=10.87.6.49
+
+[aap_lab_dev]
+lab-dev-1  ansible_host=10.87.6.50
+lab-dev-2  ansible_host=10.87.6.51
+lab-dev-3  ansible_host=10.87.6.52
+
+[aap_lab_test]
+lab-test-1  ansible_host=10.87.6.53
+lab-test-2  ansible_host=10.87.6.54
+lab-test-3  ansible_host=10.87.6.55
+
+[aap_lab_prod]
+lab-prod-1  ansible_host=10.87.6.56
+lab-prod-2  ansible_host=10.87.6.57
+lab-prod-3  ansible_host=10.87.6.58
+
+[aap_lab_db]
+lab-db-1  ansible_host=10.87.6.48
+
+[aap_lab_control_nodes]
+
+[grafana]
+lab-grafana-1  ansible_host=10.87.6.59
+
+[prometheus]
+lab-prometheus-1  ansible_host=10.87.6.60
+
+[unassigned]
+
+
+
+#################
+### SUBGROUPS ###
+#################
+[aap_lab__all__envs:children]
+aap_lab_dev
+aap_lab_test
+aap_lab_prod
+aap_lab_db
+unassigned
+
+[aap_lab__all__envs:vars]
+ansible_user=root
+
+[aap_lab__all__nodes:children]
+aap_lab_nodes
+aap_lab_isoexec
+aap_lab_dev
+aap_lab_test
+aap_lab_prod
+aap_lab_db
+aap_lab_control_nodes
+grafana
+prometheus
+unassigned
+
+[aap_lab__all__nodes:vars]
+ansible_user=root
+
+
+
+# vars for all hosts/groups
+[all:vars]
+ansible_ssh_common_args='-J root@10.1.1.86'

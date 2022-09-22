@@ -1,0 +1,6 @@
+---
+__lab_bridge : vmbr0
+__lab_vlan   : 42
+
+
+...

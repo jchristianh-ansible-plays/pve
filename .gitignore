@@ -1,0 +1,8 @@
+vault/*
+unused
+tower_grafana_dashboards
+old.templates
+notes
+files/*
+facts.d
+collections/ansible_collections

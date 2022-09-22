@@ -1,0 +1,30 @@
+---
+- name: Managed PVE Environment
+  hosts: localhost
+  connection: local
+  become: no
+  gather_facts: no
+
+
+  # --------------------------------------------- #
+  # INLINE VARS
+  # --------------------------------------------- #
+  vars:
+    # roles to include
+    __include_roles:
+      - jchristianh.pve.ssh_keygen
+
+
+  # --------------------------------------------- #
+  # TASKS
+  # --------------------------------------------- #
+  tasks:
+    - name         : Provision environment
+      include_role :
+        name       : "{{ lv_provision }}"
+      loop         : "{{ __include_roles }}"
+      loop_control :
+        loop_var   : lv_provision
+
+
+...

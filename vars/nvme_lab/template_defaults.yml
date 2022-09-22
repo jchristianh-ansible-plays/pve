@@ -1,0 +1,26 @@
+---
+lab_template_header: Lab Environment
+
+
+lab_inv_dest   : "{{ playbook_dir }}/inventory"
+lab_inv_file   : lab_hosts
+lab_inv_tmpl   : templates/ansible_inventory.j2
+lab_inv_ver    : 1.0
+lab_inv_rev    : 220908.1055
+
+
+etc_hosts_dest : "{{ playbook_dir }}/files/hosts"
+etc_hosts_tmpl : templates/etc_hosts.j2
+etc_hosts_file : /etc/hosts
+etc_hosts_ver  : 1.0
+etc_hosts_rev  : 220818.1017
+
+
+prometheus_config_tmpl : templates/prometheus_yml.j2
+prometheus_config_file : /etc/prometheus/prometheus.yml
+prometheus_config_ver  : 1.0
+prometheus_config_rev  : 220828.2233
+
+
+...
+

@@ -1,0 +1,43 @@
+---
+- name: Provision PVE Managed Hosts
+  hosts: prometheus
+  become: yes
+  gather_facts: yes
+
+
+  # --------------------------------------------- #
+  # INCLUDED VARIABLES
+  # --------------------------------------------- #
+  vars_files:
+    - "vars/{{ __pve_env | default('tower_lab') }}/defaults.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/environment_packages.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/inventory_vars.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/lab_nodes.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/network.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/prometheus.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/ssh_keypair.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/template_defaults.yml"
+
+
+  # --------------------------------------------- #
+  # INLINE VARS
+  # --------------------------------------------- #
+  vars:
+    # roles to include
+    __include_roles:
+      - jchristianh.lab_setup.prometheus
+
+
+  # --------------------------------------------- #
+  # TASKS
+  # --------------------------------------------- #
+  tasks:
+    - name         : Provision environment
+      include_role :
+        name       : "{{ lv_provision }}"
+      loop         : "{{ __include_roles }}"
+      loop_control :
+        loop_var   : lv_provision
+
+
+...

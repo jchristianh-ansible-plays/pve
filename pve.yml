@@ -1,0 +1,133 @@
+---
+- name: Managed PVE Environment
+  hosts: localhost
+  connection: local
+  become: no
+  gather_facts: no
+
+
+  vars_files:
+    - "vars/{{ __pve_env | default('tower_lab') }}/defaults.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/environment_packages.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/inventory_vars.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/lab_nodes.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/network.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/prometheus.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/ssh_keypair.yml"
+    - "vars/{{ __pve_env | default('tower_lab') }}/template_defaults.yml"
+
+
+  vars:
+    # Default action is to create and start
+    # an environment
+    #
+    # Available values:
+    # create|start|stop|shutdown|map|snapshot|rollback|destroy
+    __run_action: 'create'
+
+
+  tasks:
+    # Generate VMIDs once at the start
+    - name: Include generate_vmid role
+      include_role:
+        name: jchristianh.pve.generate_vmid
+
+
+    # Creates the managed nodes and powers them on
+    - name: Create Environment
+      include_role:
+        name: "{{ lv_pve_create_roles }}"
+      loop:
+        - jchristianh.pve.ssh_keygen
+        - jchristianh.pve.create_vms
+        - jchristianh.pve.configure_vms
+        - jchristianh.pve.start_vms
+      loop_control:
+        loop_var: lv_pve_create_roles
+      when:
+        - __run_action == 'create'
+
+
+    # Create an Ansible inventory for manage_nodes.yml
+    # and an `/etc/hosts` file for deployment to the managed
+    # nodes
+    - name: Map Environment
+      include_role:
+        name: "{{ lv_pve_map_env }}"
+      loop:
+        - jchristianh.pve.get_vm_ipaddr
+        - jchristianh.pve.create_ansible_inventory
+        - jchristianh.pve.create_etc_hosts
+      loop_control:
+        loop_var: lv_pve_map_env
+      when:
+        - __run_action == 'map' or
+          __run_action == 'create'
+
+
+    # Called either at the end of the environment creation
+    # or at will (ie: -e __run_action=snapshot)
+    #
+    # (this will only create a single snapshot whose name
+    # is defined in the '__lab_snapshot_name' var; if snapshot
+    # of this name already exists snapshot creation is skipped)
+    - name: Snapshot Environment
+      include_role:
+        name: jchristianh.pve.create_snapshots
+      when:
+        - __run_action == 'snapshot' or
+          __run_action == 'create'
+
+
+    # Provides the ability to rollback the environment
+    # to the initial provisioned state
+    - name: Rollback Environment
+      include_role:
+        name: "{{ lv_pve_rollback_vms }}"
+      loop:
+        - jchristianh.pve.rollback_vms
+        - jchristianh.pve.configure_vms
+        - jchristianh.pve.start_vms
+      loop_control:
+        loop_var: lv_pve_rollback_vms
+      when:
+        - __run_action == 'rollback'
+
+
+    # Stops all managed nodes and destroys them
+    - name: Destroy Environment
+      include_role:
+        name: "{{ lv_pve_destroy_roles }}"
+      loop:
+        - jchristianh.pve.stop_vms
+        - jchristianh.pve.destroy_vms
+      loop_control:
+        loop_var: lv_pve_destroy_roles
+      when:
+        - __run_action == 'destroy'
+
+
+    # Starts all managed nodes
+    - name: Start VMs
+      include_role:
+        name: jchristianh.pve.start_vms
+      when:
+        - __run_action == 'start'
+
+
+    # Hard stops (power off) all managed nodes
+    - name: Stop VMs
+      include_role:
+        name: jchristianh.pve.stop_vms
+      when:
+        - __run_action == 'stop'
+
+
+    # Shuts down all managed nodes gracefully
+    - name: Shutdown VMs
+      include_role:
+        name: jchristianh.pve.shutdown_vms
+      when:
+        - __run_action == 'shutdown'
+
+...

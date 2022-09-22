@@ -1,0 +1,19 @@
+---
+collections:
+  # Official/Community collections
+  - name: ansible.posix
+  - name: community.general
+  - name: community.crypto
+
+
+  # Main collections
+  - name: https://github.com/jchristianh-ansible-collections/pve.git
+    type: git
+    version: main
+
+  - name: https://github.com/jchristianh-ansible-collections/lab_setup.git
+    type: git
+    version: main
+
+
+...

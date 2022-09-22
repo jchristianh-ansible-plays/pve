@@ -1,0 +1,29 @@
+---
+- name: Provision PVE Managed Hosts
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+
+  # --------------------------------------------- #
+  # INLINE VARS
+  # --------------------------------------------- #
+  vars:
+    # roles to include
+    __include_roles:
+      - jchristianh.lab_setup.node_exporter
+
+
+  # --------------------------------------------- #
+  # TASKS
+  # --------------------------------------------- #
+  tasks:
+    - name         : Provision environment
+      include_role :
+        name       : "{{ lv_provision }}"
+      loop         : "{{ __include_roles }}"
+      loop_control :
+        loop_var   : lv_provision
+
+
+...
