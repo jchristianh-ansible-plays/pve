@@ -6,17 +6,9 @@
   gather_facts: no
 
 
-  vars_files:
-    - "vars/{{ __pve_env | default('tower_lab') }}/defaults.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/environment_packages.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/inventory_vars.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/lab_nodes.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/network.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/prometheus.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/ssh_keypair.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/template_defaults.yml"
-
-
+  # --------------------------------------------- #
+  # INLINE VARIABLES
+  # --------------------------------------------- #
   vars:
     # Default action is to create and start
     # an environment
@@ -27,6 +19,11 @@
 
 
   tasks:
+    - name: Include required variables for environment
+      include_vars:
+        dir: "vars/{{ __pve_env | default('tower_lab') }}"
+
+
     # Generate VMIDs once at the start
     - name: Include generate_vmid role
       include_role:

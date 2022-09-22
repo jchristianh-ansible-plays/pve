@@ -6,20 +6,6 @@
 
 
   # --------------------------------------------- #
-  # INCLUDED VARIABLES
-  # --------------------------------------------- #
-  vars_files:
-    - "vars/{{ __pve_env | default('tower_lab') }}/defaults.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/environment_packages.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/inventory_vars.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/lab_nodes.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/network.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/prometheus.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/ssh_keypair.yml"
-    - "vars/{{ __pve_env | default('tower_lab') }}/template_defaults.yml"
-
-
-  # --------------------------------------------- #
   # INLINE VARIABLES
   # --------------------------------------------- #
   vars:
@@ -46,14 +32,16 @@
   # TASKS
   # --------------------------------------------- #
   tasks:
+    - name: Include required variables for environment
+      include_vars:
+        dir: "vars/{{ __pve_env | default('tower_lab') }}"
+
+
     - name: Include only RHSM role if unregistering
       set_fact:
         __include_roles: ['jchristianh.lab_setup.rhsm']
       when:
         - not __rhsm_register|bool
-
-
-# we can use set_fact with __include_roles; append rhsm if __rhsm_register == yes
 
 
     - name         : Provision environment
